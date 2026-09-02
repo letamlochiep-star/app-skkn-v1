@@ -1,14 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getCurrentUser } from "@/lib/auth/session";
 import { DashboardService } from "@/server/services/dashboard-service";
 import { STAGE_LABELS, STAGE_PROGRESS_MAP } from "@/types/project";
 
 export default async function DashboardPage() {
-  const supabase = createServerSupabaseClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/login");

@@ -19,6 +19,22 @@ export class ProfileRepository implements BaseRepository<Profile> {
     memoryProfiles.clear();
   }
 
+  static async getProfileById(id: string): Promise<Profile | null> {
+    const repo = new ProfileRepository();
+    return repo.findById(id);
+  }
+
+  static async upsertProfile(profileData: Partial<Profile>): Promise<Profile> {
+    const repo = new ProfileRepository();
+    if (profileData.id) {
+      const existing = await repo.findById(profileData.id);
+      if (existing) {
+        return repo.update(profileData.id, profileData);
+      }
+    }
+    return repo.create(profileData);
+  }
+
   static setMemoryProfile(profile: Profile) {
     memoryProfiles.set(profile.id, profile);
   }
