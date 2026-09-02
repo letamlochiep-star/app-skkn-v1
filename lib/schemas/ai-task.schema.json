@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AITask",
+  "type": "object",
+  "required": ["taskId", "taskType", "projectId", "parameters"],
+  "properties": {
+    "taskId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "projectId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "taskType": {
+      "type": "string",
+      "enum": ["CLASSIFY", "EXTRACT", "IDEATE", "DRAFT", "REVIEW", "FINALIZE"]
+    },
+    "parameters": {
+      "type": "object",
+      "required": ["prompt"],
+      "properties": {
+        "prompt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "systemPrompt": {
+          "type": "string"
+        },
+        "temperature": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "maxTokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "allowFallback": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "knowledgeModules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "targetSchemaName": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,5 @@
+{
+  "taskId": "invalid-id",
+  "taskType": "NON_EXISTING_TASK_TYPE",
+  "parameters": {}
+}

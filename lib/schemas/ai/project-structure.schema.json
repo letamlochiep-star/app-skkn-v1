@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ProjectStructureResponse",
+  "type": "object",
+  "required": ["action", "documentType", "sections", "coverage", "warnings"],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["propose_structure"]
+    },
+    "documentType": {
+      "type": "string",
+      "enum": ["SKKN", "SOLUTION"]
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["id", "order", "title", "purpose", "required"],
+        "properties": {
+          "id": { "type": "string" },
+          "order": { "type": "integer" },
+          "title": { "type": "string", "minLength": 3 },
+          "purpose": { "type": "string" },
+          "required": { "type": "boolean" },
+          "subsections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "order", "title"],
+              "properties": {
+                "id": { "type": "string" },
+                "order": { "type": "integer" },
+                "title": { "type": "string" },
+                "purpose": { "type": "string" }
+              }
+            }
+          },
+          "requiredDataKeys": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "evidenceNeeds": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "estimatedLength": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "required": ["topicCovered", "problemCovered", "solutionCovered", "evidenceCovered", "effectivenessCovered", "referencesCovered"],
+      "properties": {
+        "topicCovered": { "type": "boolean" },
+        "problemCovered": { "type": "boolean" },
+        "solutionCovered": { "type": "boolean" },
+        "evidenceCovered": { "type": "boolean" },
+        "effectivenessCovered": { "type": "boolean" },
+        "referencesCovered": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

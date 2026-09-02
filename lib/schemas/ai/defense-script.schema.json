@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DefenseScriptResponse",
+  "type": "object",
+  "required": ["action", "durationMinutes", "sections", "closingStatement", "warnings"],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["generate_defense_script"]
+    },
+    "durationMinutes": {
+      "type": "integer",
+      "enum": [5, 7, 10]
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["spokenText", "durationSeconds"],
+        "properties": {
+          "segmentId": { "type": "string" },
+          "spokenText": { "type": "string", "minLength": 10 },
+          "durationSeconds": { "type": "integer" },
+          "keyFacts": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "evidenceKeys": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "closingStatement": { "type": "string" },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

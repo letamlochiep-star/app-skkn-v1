@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DefenseAnswerFrameworksResponse",
+  "type": "object",
+  "required": ["action", "frameworks", "warnings"],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["generate_answer_framework"]
+    },
+    "frameworks": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["questionId", "directAnswer", "supportingPoints", "limitations", "avoidClaims", "closingLine"],
+        "properties": {
+          "questionId": { "type": "string" },
+          "directAnswer": { "type": "string" },
+          "evidenceKeys": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "supportingPoints": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "limitations": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "avoidClaims": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "closingLine": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

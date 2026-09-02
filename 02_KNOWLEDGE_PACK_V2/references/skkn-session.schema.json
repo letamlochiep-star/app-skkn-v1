@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SKKN Session Payload",
+  "type": "object",
+  "required": ["project_id", "document_type", "workflow_stage", "action", "response_mode", "project_facts"],
+  "properties": {
+    "project_id": {"type": "string", "minLength": 1},
+    "document_type": {"enum": ["SKKN", "GIAI_PHAP_HUU_ICH"]},
+    "workflow_stage": {"enum": ["TOPIC", "DATA", "STRUCTURE", "WRITE", "REVIEW", "FINALIZE"]},
+    "action": {"type": "string", "minLength": 1},
+    "response_mode": {"enum": ["structured", "text"]},
+    "subject_group": {"enum": ["MATH", "LITERATURE", "FOREIGN_LANGUAGE", "NATURAL_SCIENCE", "SOCIAL_SCIENCE", "INFORMATICS_TECHNOLOGY", "PRIMARY", "PRESCHOOL", "OTHER"]},
+    "topic_locked": {"type": "boolean"},
+    "structure_locked": {"type": "boolean"},
+    "project_facts": {"type": "object"},
+    "evidence": {"type": "array", "items": {"type": "object"}},
+    "unit_rules": {"type": "object"},
+    "current_section": {"type": ["string", "null"]},
+    "user_message": {"type": ["string", "null"]},
+    "policy_snapshot_date": {"type": ["string", "null"], "format": "date"}
+  },
+  "additionalProperties": true
+}

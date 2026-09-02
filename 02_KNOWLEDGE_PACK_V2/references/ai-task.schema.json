@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Router Task",
+  "type": "object",
+  "required": ["task_class", "risk_level", "requires_structured_output", "knowledge_modules", "payload"],
+  "properties": {
+    "task_class": {"enum": ["CLASSIFY", "EXTRACT", "IDEATE", "DRAFT", "REVIEW", "FINALIZE"]},
+    "risk_level": {"enum": ["LOW", "MEDIUM", "HIGH"]},
+    "requires_structured_output": {"type": "boolean"},
+    "knowledge_modules": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "max_output_tokens": {"type": "integer", "minimum": 128},
+    "allow_fallback_provider": {"type": "boolean"},
+    "payload": {"type": "object"}
+  },
+  "additionalProperties": false
+}

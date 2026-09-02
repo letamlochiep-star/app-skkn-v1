@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EighteenPromptSetResponse",
+  "type": "object",
+  "required": ["action", "prompts", "promptFrameworkVersion"],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["generate_18_prompts"]
+    },
+    "promptFrameworkVersion": {
+      "type": "string"
+    },
+    "prompts": {
+      "type": "array",
+      "minItems": 18,
+      "maxItems": 18,
+      "items": {
+        "type": "object",
+        "required": ["number", "title", "purpose", "promptText", "requiredDataKeys", "missingDataKeys"],
+        "properties": {
+          "number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 18
+          },
+          "title": { "type": "string", "minLength": 3 },
+          "purpose": { "type": "string" },
+          "promptText": { "type": "string", "minLength": 20 },
+          "requiredDataKeys": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "missingDataKeys": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "status": {
+            "type": "string",
+            "enum": ["READY", "READY_WITH_PLACEHOLDERS", "BLOCKED"]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "references": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

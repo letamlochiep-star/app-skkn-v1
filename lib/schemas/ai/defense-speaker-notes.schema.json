@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DefenseSpeakerNotesResponse",
+  "type": "object",
+  "required": ["action", "notes", "warnings"],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["generate_speaker_notes"]
+    },
+    "notes": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["slideNumber", "talkingPoints", "emphasis", "transition", "durationSeconds"],
+        "properties": {
+          "slideNumber": { "type": "integer" },
+          "talkingPoints": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "emphasis": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "transition": { "type": "string" },
+          "warning": { "type": "string" },
+          "durationSeconds": { "type": "integer" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

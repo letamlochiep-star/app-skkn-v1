@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StepResponse",
+  "type": "object",
+  "required": ["stepId", "status", "result", "timestamp"],
+  "properties": {
+    "stepId": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "status": {
+      "type": "string",
+      "enum": ["SUCCESS", "VALIDATION_ERROR", "PROCESSING_ERROR"]
+    },
+    "result": {
+      "type": "object"
+    },
+    "validationErrors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field", "message"],
+        "properties": {
+          "field": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "suggestions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "timestamp": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

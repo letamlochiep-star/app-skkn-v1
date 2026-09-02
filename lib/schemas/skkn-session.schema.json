@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SKKNSession",
+  "type": "object",
+  "required": ["sessionId", "projectId", "userId", "currentStep", "status", "contextData", "updatedAt"],
+  "properties": {
+    "sessionId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "projectId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "userId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "currentStep": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "PAUSED", "COMPLETED", "FAILED"]
+    },
+    "contextData": {
+      "type": "object",
+      "required": ["subjectGroup", "educationLevel"],
+      "properties": {
+        "subjectGroup": {
+          "type": "string",
+          "enum": ["MATH", "LITERATURE", "NATURAL_SCIENCES", "SOCIAL_SCIENCES", "FOREIGN_LANGUAGES", "PRIMARY_GENERAL", "PRE_SCHOOL", "OTHER"]
+        },
+        "educationLevel": {
+          "type": "string",
+          "enum": ["PRE_SCHOOL", "PRIMARY", "SECONDARY", "HIGH_SCHOOL", "VOCATIONAL", "HIGHER_EDUCATION"]
+        },
+        "targetGrade": {
+          "type": "string"
+        },
+        "topicTitle": {
+          "type": "string"
+        },
+        "collectedFacts": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    "updatedAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

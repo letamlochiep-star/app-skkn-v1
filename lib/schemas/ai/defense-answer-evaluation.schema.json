@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DefenseAnswerEvaluationResponse",
+  "type": "object",
+  "required": [
+    "action",
+    "assessment",
+    "strengths",
+    "issues",
+    "unsupportedClaims",
+    "missingEvidence",
+    "improvedAnswerFramework"
+  ],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["evaluate_defense_answer"]
+    },
+    "assessment": {
+      "type": "string",
+      "enum": ["STRONG", "ADEQUATE", "NEEDS_IMPROVEMENT", "UNSUPPORTED"]
+    },
+    "strengths": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "issues": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "unsupportedClaims": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "missingEvidence": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "improvedAnswerFramework": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "followUpQuestion": { "type": "string" }
+  },
+  "additionalProperties": false
+}

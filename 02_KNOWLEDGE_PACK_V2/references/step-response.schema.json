@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SKKN Step Response",
+  "type": "object",
+  "required": ["status", "workflow_stage", "action", "data_completeness", "missing_critical_fields", "knowledge_modules_used", "result"],
+  "properties": {
+    "status": {"enum": ["OK", "NEED_DATA", "BLOCKED", "REVIEW_REQUIRED"]},
+    "workflow_stage": {"enum": ["TOPIC", "DATA", "STRUCTURE", "WRITE", "REVIEW", "FINALIZE"]},
+    "action": {"type": "string"},
+    "data_completeness": {"type": "integer", "minimum": 0, "maximum": 100},
+    "missing_critical_fields": {"type": "array", "items": {"type": "string"}},
+    "next_questions": {"type": "array", "maxItems": 5, "items": {"type": "object", "required": ["field", "question"], "properties": {"field": {"type": "string"}, "question": {"type": "string"}, "priority_score": {"type": "integer", "minimum": 0, "maximum": 10}}, "additionalProperties": true}},
+    "knowledge_modules_used": {"type": "array", "items": {"type": "string"}},
+    "policy_snapshot_date": {"type": ["string", "null"], "format": "date"},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "result": {}
+  },
+  "additionalProperties": true
+}

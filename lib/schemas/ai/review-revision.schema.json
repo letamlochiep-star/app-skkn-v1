@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ReviewRevisionResponse",
+  "type": "object",
+  "required": [
+    "action",
+    "findingId",
+    "revisedContent",
+    "changesSummary",
+    "usedFactKeys",
+    "missingFactKeys",
+    "warnings"
+  ],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["revise_section"]
+    },
+    "findingId": { "type": "string" },
+    "sectionId": { "type": "string" },
+    "revisedContent": { "type": "string", "minLength": 20 },
+    "changesSummary": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "usedFactKeys": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "missingFactKeys": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

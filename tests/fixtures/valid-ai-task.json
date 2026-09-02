@@ -1,0 +1,17 @@
+{
+  "taskId": "d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a44",
+  "projectId": "b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22",
+  "taskType": "DRAFT",
+  "parameters": {
+    "prompt": "Soạn thảo phần Cơ sở lý luận cho đề tài Sáng kiến kinh nghiệm môn Toán",
+    "systemPrompt": "Bạn là chuyên gia sư phạm.",
+    "temperature": 0.3,
+    "maxTokens": 2000,
+    "allowFallback": true
+  },
+  "knowledgeModules": [
+    "knowledge-math.md",
+    "skkn-structure-standard.md"
+  ],
+  "targetSchemaName": "step-response"
+}

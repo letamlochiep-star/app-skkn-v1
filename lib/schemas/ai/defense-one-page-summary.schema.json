@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DefenseOnePageSummaryResponse",
+  "type": "object",
+  "required": [
+    "action",
+    "title",
+    "problem",
+    "solution",
+    "improvements",
+    "evidence",
+    "effectiveness",
+    "applicability",
+    "limitations",
+    "closing",
+    "warnings"
+  ],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["generate_one_page_summary"]
+    },
+    "title": { "type": "string" },
+    "problem": { "type": "string" },
+    "solution": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "improvements": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "effectiveness": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "applicability": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "closing": { "type": "string" },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

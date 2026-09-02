@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DefenseOutlineResponse",
+  "type": "object",
+  "required": ["action", "durationMinutes", "segments", "totalDurationSeconds", "warnings"],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["generate_defense_outline"]
+    },
+    "durationMinutes": {
+      "type": "integer",
+      "enum": [5, 7, 10]
+    },
+    "segments": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["order", "title", "purpose", "keyPoints", "durationSeconds"],
+        "properties": {
+          "order": { "type": "integer" },
+          "title": { "type": "string" },
+          "purpose": { "type": "string" },
+          "keyPoints": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "durationSeconds": { "type": "integer" },
+          "sourceSections": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "totalDurationSeconds": { "type": "integer" },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

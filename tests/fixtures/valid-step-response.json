@@ -1,0 +1,15 @@
+{
+  "stepId": 1,
+  "status": "SUCCESS",
+  "result": {
+    "proposedTitles": [
+      "Vận dụng PPDH giải quyết vấn đề trong môn Toán lớp 8",
+      "Nâng cao năng lực mô hình hóa toán học cho học sinh THCS"
+    ],
+    "selectedApproach": "Đổi mới phương pháp dạy học gắn với thực tiễn"
+  },
+  "suggestions": [
+    "Bổ sung thêm phiếu khảo sát mức độ hứng thú học tập của học sinh"
+  ],
+  "timestamp": "2026-09-02T10:15:00.000Z"
+}

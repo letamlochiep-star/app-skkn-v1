@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DefenseSlidesResponse",
+  "type": "object",
+  "required": ["action", "slides", "warnings"],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["generate_slide_content"]
+    },
+    "slides": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["slideNumber", "title", "keyPoints", "keyMessage", "estimatedSeconds"],
+        "properties": {
+          "slideNumber": { "type": "integer" },
+          "title": { "type": "string" },
+          "subtitle": { "type": "string" },
+          "keyPoints": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "keyMessage": { "type": "string" },
+          "visualSuggestion": { "type": "string" },
+          "evidenceKeys": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "sourceSections": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "estimatedSeconds": { "type": "integer" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TopicSuggestionsResponse",
+  "type": "object",
+  "required": ["action", "topics", "recommendedIndex", "recommendationReason"],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["suggest_topics"]
+    },
+    "topics": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["title", "rationale", "strengths", "evidenceFeasibility", "notes"],
+        "properties": {
+          "title": { "type": "string", "minLength": 5, "maxLength": 300 },
+          "rationale": { "type": "string" },
+          "strengths": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "evidenceFeasibility": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "recommendedIndex": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4
+    },
+    "recommendationReason": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

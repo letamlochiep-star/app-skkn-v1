@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SmartDataQuestionsResponse",
+  "type": "object",
+  "required": ["action", "questions", "remainingRequired", "canAssessCompleteness"],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["next_questions"]
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["id", "fieldKey", "group", "question", "helpText", "answerType", "required"],
+        "properties": {
+          "id": { "type": "string" },
+          "fieldKey": { "type": "string" },
+          "group": {
+            "type": "string",
+            "enum": ["GENERAL", "TARGET_GROUP", "REALITY", "CAUSES", "GOALS", "SOLUTIONS", "EVIDENCE", "LOCAL_RULES"]
+          },
+          "question": { "type": "string", "minLength": 5 },
+          "helpText": { "type": "string" },
+          "answerType": {
+            "type": "string",
+            "enum": ["SHORT_TEXT", "LONG_TEXT", "NUMBER", "PERCENTAGE", "DATE", "DATE_RANGE", "SELECT", "MULTI_SELECT", "YES_NO", "STATUS"]
+          },
+          "required": { "type": "boolean" },
+          "options": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "remainingRequired": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "canAssessCompleteness": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

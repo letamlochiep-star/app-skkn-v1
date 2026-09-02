@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DefenseJuryQuestionsResponse",
+  "type": "object",
+  "required": ["action", "questions", "warnings"],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["generate_jury_questions"]
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["id", "category", "difficulty", "question", "whyAsked"],
+        "properties": {
+          "id": { "type": "string" },
+          "category": { "type": "string" },
+          "difficulty": {
+            "type": "string",
+            "enum": ["BASIC", "PROBING", "CHALLENGING"]
+          },
+          "question": { "type": "string", "minLength": 10 },
+          "whyAsked": { "type": "string" },
+          "sourceSections": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

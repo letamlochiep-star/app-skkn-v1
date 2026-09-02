@@ -1,0 +1,5 @@
+{
+  "stepId": 100,
+  "status": "NOT_A_VALID_STATUS",
+  "result": "should be an object not string"
+}

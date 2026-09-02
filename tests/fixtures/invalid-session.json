@@ -1,0 +1,10 @@
+{
+  "sessionId": "not-a-valid-uuid",
+  "projectId": "b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22",
+  "userId": "c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a33",
+  "currentStep": 99,
+  "status": "INVALID_STATUS_VALUE",
+  "contextData": {
+    "subjectGroup": "UNKNOWN_SUBJECT"
+  }
+}

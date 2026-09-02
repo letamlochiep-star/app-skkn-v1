@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TopicAnalysisResponse",
+  "type": "object",
+  "required": ["action", "analysis", "strengths", "needsRevision", "suggestions"],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["analyze_topic"]
+    },
+    "analysis": {
+      "type": "object",
+      "required": ["object", "problem", "intervention", "scope", "clarity", "novelty", "measurability", "evidenceFeasibility"],
+      "properties": {
+        "object": {
+          "type": "object",
+          "required": ["status", "comment"],
+          "properties": {
+            "status": { "type": "string", "enum": ["GOOD", "NEEDS_CLARIFICATION", "NEEDS_REVISION"] },
+            "comment": { "type": "string" }
+          }
+        },
+        "problem": {
+          "type": "object",
+          "required": ["status", "comment"],
+          "properties": {
+            "status": { "type": "string", "enum": ["GOOD", "NEEDS_CLARIFICATION", "NEEDS_REVISION"] },
+            "comment": { "type": "string" }
+          }
+        },
+        "intervention": {
+          "type": "object",
+          "required": ["status", "comment"],
+          "properties": {
+            "status": { "type": "string", "enum": ["GOOD", "NEEDS_CLARIFICATION", "NEEDS_REVISION"] },
+            "comment": { "type": "string" }
+          }
+        },
+        "scope": {
+          "type": "object",
+          "required": ["status", "comment"],
+          "properties": {
+            "status": { "type": "string", "enum": ["GOOD", "NEEDS_CLARIFICATION", "NEEDS_REVISION"] },
+            "comment": { "type": "string" }
+          }
+        },
+        "clarity": {
+          "type": "object",
+          "required": ["status", "comment"],
+          "properties": {
+            "status": { "type": "string", "enum": ["GOOD", "NEEDS_CLARIFICATION", "NEEDS_REVISION"] },
+            "comment": { "type": "string" }
+          }
+        },
+        "novelty": {
+          "type": "object",
+          "required": ["status", "comment"],
+          "properties": {
+            "status": { "type": "string", "enum": ["GOOD", "NEEDS_CLARIFICATION", "NEEDS_REVISION"] },
+            "comment": { "type": "string" }
+          }
+        },
+        "measurability": {
+          "type": "object",
+          "required": ["status", "comment"],
+          "properties": {
+            "status": { "type": "string", "enum": ["GOOD", "NEEDS_CLARIFICATION", "NEEDS_REVISION"] },
+            "comment": { "type": "string" }
+          }
+        },
+        "evidenceFeasibility": {
+          "type": "object",
+          "required": ["status", "comment"],
+          "properties": {
+            "status": { "type": "string", "enum": ["GOOD", "NEEDS_CLARIFICATION", "NEEDS_REVISION"] },
+            "comment": { "type": "string" }
+          }
+        }
+      }
+    },
+    "strengths": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "needsRevision": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "suggestions": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["title", "direction", "rationale", "evidenceFeasibility"],
+        "properties": {
+          "title": { "type": "string", "minLength": 5, "maxLength": 300 },
+          "direction": { "type": "string", "enum": ["SAFE", "INTERVENTION_FOCUS", "NOVELTY_OR_SCOPE_FOCUS"] },
+          "rationale": { "type": "string" },
+          "evidenceFeasibility": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
