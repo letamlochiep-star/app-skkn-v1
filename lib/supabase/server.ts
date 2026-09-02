@@ -1,5 +1,16 @@
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
+﻿import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
+
+export const isServerSupabaseConfigured =
+  supabaseUrl.startsWith("https://") &&
+  supabaseUrl.includes(".supabase.co") &&
+  (
+    (supabaseAnonKey.startsWith("eyJ") && supabaseAnonKey.length > 50) ||
+    (supabaseAnonKey.startsWith("sb_publishable_") && supabaseAnonKey.length > 20)
+  );
 
 /**
  * Creates a Supabase client for Server Components, Server Actions, and Route Handlers.
@@ -7,11 +18,9 @@ import { cookies } from "next/headers";
  */
 export function createServerSupabaseClient() {
   const cookieStore = cookies();
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-  if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error("[Supabase Server] Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
+  if (!isServerSupabaseConfigured) {
+    throw new Error("[Supabase Server] Missing or invalid NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY");
   }
 
   return createServerClient(supabaseUrl, supabaseAnonKey, {
@@ -23,15 +32,14 @@ export function createServerSupabaseClient() {
         try {
           cookieStore.set({ name, value, ...options });
         } catch {
-          // The `set` method was called from a Server Component.
-          // This can be ignored if you have middleware refreshing user sessions.
+          // Called from Server Component - safe to ignore
         }
       },
       remove(name: string, options: CookieOptions) {
         try {
           cookieStore.set({ name, value: "", ...options });
         } catch {
-          // The `remove` method was called from a Server Component.
+          // Called from Server Component - safe to ignore
         }
       },
     },

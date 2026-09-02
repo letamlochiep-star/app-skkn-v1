@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+﻿import { GoogleGenerativeAI } from "@google/generative-ai";
 import type {
   AIProvider,
   GenerateTextInput,
@@ -12,69 +12,120 @@ import type {
 
 export class GeminiProvider implements AIProvider {
   public readonly name = "gemini" as const;
-  private client: GoogleGenerativeAI | null = null;
+  private customApiKeys: string[] = [];
+  private keyIndex: number = 0;
 
-  private getClient(): GoogleGenerativeAI {
-    if (!this.client) {
-      const apiKey = process.env.GEMINI_API_KEY;
-      if (!apiKey) {
-        throw new Error("[GeminiProvider] Missing GEMINI_API_KEY environment variable");
-      }
-      this.client = new GoogleGenerativeAI(apiKey);
+  constructor(apiKeys?: string[]) {
+    if (apiKeys && apiKeys.length > 0) {
+      this.customApiKeys = apiKeys.filter((k) => k.trim().startsWith("AIza"));
     }
-    return this.client;
+  }
+
+  public setApiKeys(apiKeys: string[]): void {
+    this.customApiKeys = apiKeys.filter((k) => k.trim().startsWith("AIza"));
+    this.keyIndex = 0;
+  }
+
+  /**
+   * Lấy API key hiện tại và xoay vòng sang key tiếp theo
+   */
+  private getNextApiKey(): string {
+    if (this.customApiKeys.length > 0) {
+      const key = this.customApiKeys[this.keyIndex % this.customApiKeys.length];
+      this.keyIndex = (this.keyIndex + 1) % this.customApiKeys.length;
+      return key;
+    }
+    const envKey = process.env.GEMINI_API_KEY;
+    if (envKey && envKey.trim().startsWith("AIza")) {
+      return envKey.trim();
+    }
+    throw new Error("[GeminiProvider] Chưa cấu hình Gemini API Key. Thầy/Cô vui lòng nhập Google Gemini API Key để tiếp tục.");
+  }
+
+  private createClient(apiKey: string): GoogleGenerativeAI {
+    return new GoogleGenerativeAI(apiKey);
+  }
+
+  /**
+   * Thực thi lệnh với cơ chế tự động xoay vòng sang key tiếp theo nếu gặp lỗi Rate Limit (429/Quota)
+   */
+  private async executeWithKeyRotation<T>(operation: (client: GoogleGenerativeAI) => Promise<T>): Promise<T> {
+    const totalKeys = Math.max(1, this.customApiKeys.length);
+    let lastError: Error | null = null;
+
+    for (let attempt = 0; attempt < totalKeys; attempt++) {
+      const apiKey = this.getNextApiKey();
+      try {
+        const client = this.createClient(apiKey);
+        return await operation(client);
+      } catch (err) {
+        lastError = err as Error;
+        const msg = lastError.message || "";
+        // Nếu lỗi do hết quota hoặc rate limit và còn key khác thì thử tiếp
+        if (this.customApiKeys.length > 1 && (msg.includes("429") || msg.includes("quota") || msg.includes("RESOURCE_EXHAUSTED"))) {
+          console.warn(`[GeminiProvider] Key ${apiKey.substring(0, 8)}... bị giới hạn quota, chuyển sang key tiếp theo...`);
+          continue;
+        }
+        throw lastError;
+      }
+    }
+    throw lastError || new Error("[GeminiProvider] Tất cả Gemini API keys đều không phản hồi.");
   }
 
   async generateText(input: GenerateTextInput): Promise<GenerateTextResult> {
     const startTime = Date.now();
-    const client = this.getClient();
     const modelName = input.model || "gemini-1.5-flash";
-    const generativeModel = client.getGenerativeModel({
-      model: modelName,
-      systemInstruction: input.systemPrompt,
-      generationConfig: {
-        temperature: input.temperature ?? 0.7,
-        maxOutputTokens: input.maxTokens,
-        stopSequences: input.stopSequences,
-      },
+
+    return this.executeWithKeyRotation(async (client) => {
+      const generativeModel = client.getGenerativeModel({
+        model: modelName,
+        systemInstruction: input.systemPrompt,
+        generationConfig: {
+          temperature: input.temperature ?? 0.7,
+          maxOutputTokens: input.maxTokens,
+          stopSequences: input.stopSequences,
+        },
+      });
+
+      const response = await generativeModel.generateContent(input.prompt);
+      const text = response.response.text();
+
+      return {
+        text,
+        inputTokens: 0,
+        outputTokens: 0,
+        model: modelName,
+        durationMs: Date.now() - startTime,
+      };
     });
-
-    const response = await generativeModel.generateContent(input.prompt);
-    const text = response.response.text();
-
-    return {
-      text,
-      inputTokens: 0,
-      outputTokens: 0,
-      model: modelName,
-      durationMs: Date.now() - startTime,
-    };
   }
 
   async generateStructured<T>(
     input: GenerateStructuredInput,
     schema?: unknown
   ): Promise<T> {
-    const client = this.getClient();
     const modelName = input.model || "gemini-1.5-flash";
-    const generativeModel = client.getGenerativeModel({
-      model: modelName,
-      systemInstruction: input.systemPrompt,
-      generationConfig: {
-        temperature: input.temperature ?? 0.2,
-        maxOutputTokens: input.maxTokens,
-        responseMimeType: "application/json",
-      },
+
+    return this.executeWithKeyRotation(async (client) => {
+      const generativeModel = client.getGenerativeModel({
+        model: modelName,
+        systemInstruction: input.systemPrompt,
+        generationConfig: {
+          temperature: input.temperature ?? 0.2,
+          maxOutputTokens: input.maxTokens,
+          responseMimeType: "application/json",
+        },
+      });
+
+      const response = await generativeModel.generateContent(input.prompt);
+      const text = response.response.text();
+
+      try {
+        return JSON.parse(text) as T;
+      } catch (err) {
+        throw new Error(`[GeminiProvider] Failed to parse JSON response: ${(err as Error).message}`);
+      }
     });
-
-    const response = await generativeModel.generateContent(input.prompt);
-    const text = response.response.text();
-
-    try {
-      return JSON.parse(text) as T;
-    } catch (err) {
-      throw new Error(`[GeminiProvider] Failed to parse JSON response: ${(err as Error).message}`);
-    }
   }
 
   async analyzeDocument(
